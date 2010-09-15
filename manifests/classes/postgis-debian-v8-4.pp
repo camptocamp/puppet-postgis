@@ -16,7 +16,7 @@ class postgis::debian::v8-4 inherits postgis::debian::base {
   }
 
   case $lsbdistcodename {
-    "lenny" : { 
+    /lenny|squeeze/ : { 
       Package["postgis"] {
         name => "postgresql-8.4-postgis"
       }
