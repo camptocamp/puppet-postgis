@@ -6,6 +6,7 @@ class postgis {
     Debian: {
       case $lsbdistcodename {
         etch,lenny :  { include postgis::debian::v8-3 }
+        squeeze :     { include postgis::debian::v8-4 }
         default: { fail "postgis not available for ${operatingsystem}/${lsbdistcodename}"}
       }
     }
@@ -35,8 +36,8 @@ class postgis::v8-4 {
   case $operatingsystem {
     Debian: {
       case $lsbdistcodename {
-        lenny :  { include postgis::debian::v8-4 }
-        default: { fail "postgis 8.4 not available for ${operatingsystem}/${lsbdistcodename}"}
+        lenny,squeeze :  { include postgis::debian::v8-4 }
+        default:         { fail "postgis 8.4 not available for ${operatingsystem}/${lsbdistcodename}"}
       }
     }
     Ubuntu: {
