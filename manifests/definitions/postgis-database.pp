@@ -19,6 +19,7 @@ define postgis::database(
     template => "template_postgis",
     source => $source,
     overwrite => $overwrite,
+    require => Exec["create postgis_template"],
   }
 
 }
