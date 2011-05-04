@@ -25,7 +25,8 @@ class postgis::debian::base inherits postgis::base {
     user => postgres,
     require => [ 
       Package["postgis"],
-      File["/usr/local/bin/make-postgresql-postgis-template.sh"]
+      File["/usr/local/bin/make-postgresql-postgis-template.sh"],
+      Postgresql::Cluster["main"],
     ]
   }
   
