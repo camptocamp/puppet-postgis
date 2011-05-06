@@ -13,20 +13,19 @@ class postgis::debian::base inherits postgis::base {
 
   file {"/usr/local/bin/make-postgresql-postgis-template.sh":
     ensure => present,
-    owner => root,
-    group => root,
-    mode => 755,
+    owner  => root,
+    group  => root,
+    mode   => 755,
     source => "puppet:///postgis/usr/local/bin/make-postgresql-postgis-template.sh",
   }
 
   exec {"create postgis_template":
     command => "/usr/local/bin/make-postgresql-postgis-template.sh",
-    unless => "psql -l |grep template_postgis",
-    user => postgres,
+    unless  => "psql -l |grep template_postgis",
+    user    => postgres,
     require => [ 
       Package["postgis"],
       File["/usr/local/bin/make-postgresql-postgis-template.sh"],
-      Postgresql::Cluster["main"],
     ]
   }
   
