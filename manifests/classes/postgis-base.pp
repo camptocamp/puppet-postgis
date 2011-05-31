@@ -10,7 +10,7 @@ class postgis::base {
 
   package {"postgis":
     ensure => present,
-    require => Package["postgresql"],
+    require => Postgresql::Cluster["main"],
   }                                      
   
 }
