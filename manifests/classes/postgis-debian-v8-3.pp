@@ -17,7 +17,7 @@ class postgis::debian::v8-3 inherits postgis::debian::base {
 
   case $lsbdistcodename {
     "etch", "lenny" : { 
-      Package["postgis"] {
+      Package["postgresql-postgis"] {
         name => "postgresql-8.3-postgis"
       }
     }
