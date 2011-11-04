@@ -24,7 +24,8 @@ class postgis::debian::base inherits postgis::base {
     unless  => "psql -l |grep template_postgis",
     user    => postgres,
     require => [ 
-      Package["postgis"],
+      Package["postgresql-postgis"],
+      Service["postgresql"],
       File["/usr/local/bin/make-postgresql-postgis-template.sh"],
     ]
   }

@@ -10,7 +10,7 @@ class postgis::ubuntu::v8-4 inherits postgis::ubuntu::base {
 
   case $lsbdistcodename {
     "lucid" : { 
-      Package["postgis"] {
+      Package["postgresql-postgis"] {
         name => "postgresql-8.4-postgis"
       }
     }
