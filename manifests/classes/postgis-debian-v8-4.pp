@@ -8,13 +8,6 @@ Requires:
 */
 class postgis::debian::v8-4 inherits postgis::debian::base {
   
-  if $lsbdistcodename == "lenny" {
-    apt::preferences {"postgresql-8.4-postgis":
-      pin => "release a=${lsbdistcodename}-backports",
-      priority => "1100"
-    }
-  }
-
   case $lsbdistcodename {
     "lenny", "squeeze" : {
       Package["postgresql-postgis"] {
