@@ -8,13 +8,6 @@ Requires:
 */
 class postgis::debian::v8-3 inherits postgis::debian::base {
   
-  if $lsbdistcodename == "etch" {
-    apt::preferences {"postgresql-8.3-postgis":
-      pin => "release a=${lsbdistcodename}-backports",
-      priority => "1100"
-    }
-  }
-
   case $lsbdistcodename {
     "etch", "lenny" : { 
       Package["postgresql-postgis"] {
