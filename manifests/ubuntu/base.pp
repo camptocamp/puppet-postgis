@@ -16,7 +16,7 @@ class postgis::ubuntu::base inherits postgis::base {
     owner => root,
     group => root,
     mode => 755,
-    source => "puppet:///postgis/usr/local/bin/make-postgresql-postgis-template.sh",
+    source => "puppet:///modules/postgis/usr/local/bin/make-postgresql-postgis-template.sh",
   }
 
   exec {"create postgis_template":
