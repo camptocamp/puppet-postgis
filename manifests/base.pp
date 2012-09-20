@@ -16,7 +16,7 @@ class postgis::base {
   # It contains stuff such as spatial_ref_sys.sql and libpostgis.so.
   package { "postgresql-postgis":
     ensure  => present,
-    require => Postgresql::Cluster[$postgresql::params::data_dir],
+    require => Postgresql::Cluster[$postgresql::params::cluster_name],
   }
 
 }
