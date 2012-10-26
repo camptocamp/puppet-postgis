@@ -1,11 +1,11 @@
 class postgis::v9-1 {
-  case $operatingsystem {
+  case $::operatingsystem {
     Debian: {
-      case $lsbdistcodename {
+      case $::lsbdistcodename {
         squeeze : { include postgis::debian::v9-1 }
-        default : { fail "${name} not available for ${operatingsystem}/${lsbdistcodename}"}
+        default : { fail "${name} not available for ${::operatingsystem}/${::lsbdistcodename}"}
       }
     }
-    default: { notice "Unsupported operatingsystem ${operatingsystem}" }
+    default: { notice "Unsupported operatingsystem ${::operatingsystem}" }
   }
 }

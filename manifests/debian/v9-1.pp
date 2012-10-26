@@ -6,7 +6,7 @@
 #
 class postgis::debian::v9-1 inherits postgis::debian::base {
 
-  case $lsbdistcodename {
+  case $::lsbdistcodename {
     squeeze : {
       Package["postgresql-postgis"] {
         name => "postgresql-9.1-postgis"
@@ -14,7 +14,7 @@ class postgis::debian::v9-1 inherits postgis::debian::base {
     }
 
     default: {
-      fail "${name} not available for ${operatingsystem}/${lsbdistcodename}"
+      fail "${name} not available for ${::operatingsystem}/${::lsbdistcodename}"
     }
   }
 }
