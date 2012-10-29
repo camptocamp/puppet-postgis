@@ -1,10 +1,10 @@
 #
-# ==Class: postgis::debian::v9-1
+# ==Class: postgis::debian::v9_1
 #
 # Requires:
 #  - Class['apt::preferences']
 #
-class postgis::debian::v9-1 inherits postgis::debian::base {
+class postgis::debian::v9_1 inherits postgis::debian::base {
 
   case $::lsbdistcodename {
     squeeze : {

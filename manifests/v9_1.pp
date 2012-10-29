@@ -1,8 +1,8 @@
-class postgis::v9-1 {
+class postgis::v9_1 {
   case $::operatingsystem {
     Debian: {
       case $::lsbdistcodename {
-        squeeze : { include postgis::debian::v9-1 }
+        squeeze : { include postgis::debian::v9_1 }
         default : { fail "${name} not available for ${::operatingsystem}/${::lsbdistcodename}"}
       }
     }
