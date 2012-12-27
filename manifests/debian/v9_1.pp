@@ -7,7 +7,7 @@
 class postgis::debian::v9_1 inherits postgis::debian::base {
 
   case $::lsbdistcodename {
-    squeeze : {
+    /squeeze|wheezy/ : {
       Package['postgresql-postgis'] {
         name => 'postgresql-9.1-postgis'
       }
