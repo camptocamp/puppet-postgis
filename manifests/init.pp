@@ -4,6 +4,7 @@ class postgis {
       case $lsbdistcodename {
         etch,lenny :  { include postgis::debian::v8-3 }
         squeeze    :  { include postgis::debian::v8-4 }
+        wheezy     :  { include postgis::debian::v9_1 }
         default: { fail "postgis not available for ${operatingsystem}/${lsbdistcodename}"}
       }
     }
