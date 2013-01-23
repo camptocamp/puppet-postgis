@@ -1,15 +1,7 @@
-/*
+class postgis::debian {
 
-==Class: postgis::debian::base
-
-This class is dedicated to the common parts 
-shared by the different flavors of Debian
-
-Requires:
-  - Module puppet-postgresql
-
-*/
-class postgis::debian::base inherits postgis::base {
+  include postgis::client
+  include postgresql
 
   file {"/usr/local/bin/make-postgresql-postgis-template.sh":
     ensure => present,
@@ -24,11 +16,15 @@ class postgis::debian::base inherits postgis::base {
     unless  => "psql -l |grep template_postgis",
     user    => postgres,
     require => [ 
-      Package["postgresql-postgis"],
+      Package["postgresql-${postgis::version}-postgis"],
       Service["postgresql"],
       File["/usr/local/bin/make-postgresql-postgis-template.sh"],
     ]
   }
-  
-}
 
+  package {"postgresql-${postgis::version}-postgis":
+    ensure => present,
+    require => Postgresql::Cluster[$postgresql::cluster_name],
+  }
+
+}
