@@ -18,6 +18,10 @@ PG_SPATIAL_REF="/usr/share/postgresql/8.4/contrib/postgis-1.5/spatial_ref_sys.sq
 PG_POSTGIS="/usr/share/postgresql/9.0/contrib/postgis-1.5/postgis.sql"
 PG_SPATIAL_REF="/usr/share/postgresql/9.0/contrib/postgis-1.5/spatial_ref_sys.sql"
 ;;
+'9.1')
+PG_POSTGIS="/usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql"
+PG_SPATIAL_REF="/usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql"
+;;
 esac
 
 cat << EOF | psql -q
