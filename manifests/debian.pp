@@ -1,7 +1,7 @@
 class postgis::debian {
 
   include postgis::client
-  include postgresql
+  include ::postgresql::server
 
   file {"/usr/local/bin/make-postgresql-postgis-template.sh":
     ensure => present,
@@ -24,7 +24,7 @@ class postgis::debian {
 
   package {"postgresql-${postgis::version}-postgis":
     ensure => present,
-    require => Postgresql::Cluster[$postgresql::cluster_name],
+    require => Postgresql::Cluster[$postgresql::server::cluster_name],
   }
 
 }
