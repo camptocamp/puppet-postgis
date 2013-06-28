@@ -1,7 +1,6 @@
 class postgis::params {
 
-  include postgresql::params
-
-  $default_version = $postgresql::params::default_version
+  validate_re($::postgres_default_version, '\S+')
+  $default_version = $::postgres_default_version
 
 }
