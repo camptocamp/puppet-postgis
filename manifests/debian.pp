@@ -17,7 +17,7 @@ class postgis::debian {
     user    => postgres,
     require => [ 
       Package["postgresql-${postgis::version}-postgis"],
-      Service["postgresql"],
+      Service['postgresqld'],
       File["/usr/local/bin/make-postgresql-postgis-template.sh"],
     ]
   }
