@@ -24,7 +24,7 @@ class postgis::debian {
 
   package {"postgresql-${postgis::version}-postgis":
     ensure => present,
-    require => Postgresql::Cluster[$postgresql::server::cluster_name],
+    require => Class['postgresql::server'],
   }
 
 }
