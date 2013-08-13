@@ -19,10 +19,10 @@ class postgis (
   # Define variables
   case $::osfamily {
     'RedHat': {
-       $ostype = 'redhat'
+      $ostype = 'redhat'
     }
     'Debian': {
-       $ostype = 'debian'
+      $ostype = 'debian'
     }
     default: { fail "Unsupported OS family ${::osfamily}" }
   }
