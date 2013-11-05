@@ -7,9 +7,9 @@ define postgis::database(
   $charset = false,
 ) {
 
-  postgresql::database{$name:
+  postgresql::server::database{$name:
     owner    => $owner,
-    charset  => $charset,
+    encoding => $charset,
     template => 'template_postgis',
     require  => Exec['create postgis_template'],
   }
