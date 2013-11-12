@@ -61,6 +61,18 @@ class postgis (
     }
   }
 
+  $script_path = $::osfamily ? {
+    Debian => $::postgis::version ? {
+      '8.3'   => '/usr/share/postgresql-8.3-postgis',
+      '8.4'   => '/usr/share/postgresql/8.4/contrib/postgis-1.5',
+      '9.0'   => '/usr/share/postgresql/9.0/contrib/postgis-1.5',
+      '9.1'   => '/usr/share/postgresql/9.1/contrib/postgis-1.5',
+    },
+    RedHat => $::postgis::version ? {
+      '9.1' => '/usr/pgsql-9.1/share/contrib/postgis-1.5',
+    },
+  }
+
   # Include base
   include "postgis::${ostype}"
 }
