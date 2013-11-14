@@ -1,4 +1,3 @@
-/*
 # ==Class: postgis::client
 #
 # This class installs pgsql2shp and shp2pgsql which are part of
