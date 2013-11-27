@@ -89,7 +89,7 @@ class postgis (
 
   exec { "psql -q -d template_postgis -f ${script_path}/spatial_ref_sys.sql":
     user    => 'postgres',
-    unless  => 'echo "\dt" | psql -d template_postgis | grep -q spatial_ref_sys',
+    unless  => 'test $(echo "select count(*) from spatial_ref_sys" | psql -d template_postgis | tail -n +3 | head -n 1) -ne 0',
     require => Exec['createlang plpgsql template_postgis'],
   }
 
