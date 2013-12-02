@@ -89,7 +89,7 @@ class postgis (
 
   exec { "psql -q -d template_postgis -f ${script_path}/spatial_ref_sys.sql":
     user    => 'postgres',
-    unless  => 'test $(echo "select count(*) from spatial_ref_sys" | psql -d template_postgis | tail -n +3 | head -n 1) -ne 0',
+    unless  => 'test $(psql -At -d template_postgis -c "select count(*) from spatial_ref_sys") -ne 0',
     require => Exec['createlang plpgsql template_postgis'],
   }
 
@@ -112,11 +112,11 @@ class postgis (
     }
   } else {
     # SELECT 1 WHERE has_table_privilege('public',...) does not work before 9.1
-    exec { 'GRANT ALL ON geometry_columns TO public | psql -q':
+    exec { 'echo GRANT ALL ON geometry_columns TO public | psql -q':
       refreshonly => true,
       subscribe   => Exec["psql -q -d template_postgis -f ${script_path}/postgis.sql"],
     }
-    exec { 'GRANT SELECT ON spatial_ref_sys TO public | psql -q':
+    exec { 'echo GRANT SELECT ON spatial_ref_sys TO public | psql -q':
       refreshonly => true,
       subscribe   => Exec["psql -q -d template_postgis -f ${script_path}/spatial_ref_sys.sql"],
     }
