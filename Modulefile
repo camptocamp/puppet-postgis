@@ -1,5 +1,5 @@
 name         'camptocamp-postgis'
-version      '0.1.0'
+version      '0.1.1'
 dependency   'puppetlabs/postgresql', '>= 3.3.0'
 source       'https://github.com/camptocamp/puppet-postgis'
 author       'Camptocamp'
