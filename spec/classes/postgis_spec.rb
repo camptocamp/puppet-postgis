@@ -14,7 +14,6 @@ describe 'postgis' do
       :operatingsystem          => 'Debian',
       :operatingsystemrelease   => 'wheezy',
       :osfamily                 => 'Debian',
-      :postgres_default_version => '9.1',
     }}
   
     context 'with no parameter' do

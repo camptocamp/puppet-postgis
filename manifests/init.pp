@@ -12,7 +12,7 @@
 #   include postgis
 #
 class postgis (
-  $version       = $::postgres_default_version,
+  $version       = $::postgresql::globals::default_version,
   $check_version = true,
 ) {
 
