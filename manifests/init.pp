@@ -79,18 +79,21 @@ class postgis (
   exec { 'createlang plpgsql template_postgis':
     user    => 'postgres',
     unless  => 'createlang -l template_postgis | grep -q plpgsql',
+    path => '/usr/bin:/usr/sbin:/bin:/sbin',
   }
 
   exec { "psql -q -d template_postgis -f ${script_path}/postgis.sql":
     user    => 'postgres',
     unless  => 'echo "\dt" | psql -d template_postgis | grep -q geometry_columns',
     require => Exec['createlang plpgsql template_postgis'],
+    path => '/usr/bin:/usr/sbin:/bin:/sbin',
   }
 
   exec { "psql -q -d template_postgis -f ${script_path}/spatial_ref_sys.sql":
     user    => 'postgres',
     unless  => 'test $(psql -At -d template_postgis -c "select count(*) from spatial_ref_sys") -ne 0',
     require => Exec['createlang plpgsql template_postgis'],
+    path => '/usr/bin:/usr/sbin:/bin:/sbin',
   }
 
   if $version >= '9.1' {
@@ -115,10 +118,12 @@ class postgis (
     exec { 'echo GRANT ALL ON geometry_columns TO public | psql -q':
       refreshonly => true,
       subscribe   => Exec["psql -q -d template_postgis -f ${script_path}/postgis.sql"],
+      path => '/usr/bin:/usr/sbin:/bin:/sbin',
     }
     exec { 'echo GRANT SELECT ON spatial_ref_sys TO public | psql -q':
       refreshonly => true,
       subscribe   => Exec["psql -q -d template_postgis -f ${script_path}/spatial_ref_sys.sql"],
+      path => '/usr/bin:/usr/sbin:/bin:/sbin',
     }
   }
 
