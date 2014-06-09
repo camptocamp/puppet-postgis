@@ -65,7 +65,10 @@ class postgis (
   }
 
   $packages = $::osfamily ? {
-    Debian => ["postgresql-${version}-postgis", 'postgis'],
+    Debian => $version ? {
+      '9.3' => ['postgresql-${version}-postgis-2.1', 'postgis'],
+      default => ["postgresql-${version}-postgis", 'postgis'],
+    },
     RedHat => ['postgis91', 'postgis91-utils'],
   }
 
