@@ -35,6 +35,9 @@ class postgis (
           /^(precise|quantal)$/: {
             validate_re($version, '^9\.1$', "version ${version} is not supported for ${::operatingsystem} ${::lsbdistcodename}!")
           }
+          'trusty': {
+            validate_re($version, '^9\.3$', "version ${version} is not supported for ${::operatingsystem} ${::lsbdistcodename}!")
+          }
           default: { fail "${::operatingsystem} ${::lsbdistcodename} is not yet supported!" }
         }
       }
@@ -54,6 +57,7 @@ class postgis (
     Debian => $version ? {
       '8.3'           => '/usr/share/postgresql-8.3-postgis',
       /(8.4|9.0|9.1)/ => "/usr/share/postgresql/${version}/contrib/postgis-1.5",
+      '9.3' => "/usr/share/postgresql/${version}/contrib/postgis-2.1",
     },
     RedHat => $version ? {
       '9.1' => '/usr/pgsql-9.1/share/contrib/postgis-1.5',
@@ -61,7 +65,10 @@ class postgis (
   }
 
   $packages = $::osfamily ? {
-    Debian => ["postgresql-${version}-postgis", 'postgis'],
+    Debian => $version ? {
+      '9.3' => ['postgresql-${version}-postgis-2.1', 'postgis'],
+      default => ["postgresql-${version}-postgis", 'postgis'],
+    },
     RedHat => ['postgis91', 'postgis91-utils'],
   }
 
