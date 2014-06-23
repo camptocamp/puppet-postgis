@@ -1,75 +1,25 @@
 # Class: postgis
-#
-# Install postgis using debian packages
-#
-# Parameters:
-#   ['version']    - Version of the postgresql install to use
-#   ['check_version'] - Whether to check the version specified using the
-#                       `version` parameter. Set this to `false` if you
-#                       are using your own backported version for example.
-#
-# Sample usage:
-#   include postgis
-#
-class postgis (
-  $version       = $::postgresql::globals::default_version,
-  $check_version = true,
+class postgis(
+  $version       = undef,
+  $check_version = undef,
 ) {
 
-  if ($check_version) {
-    case $::osfamily {
-      'Debian' : {
-        case $::lsbdistcodename {
-          'lenny': {
-            validate_re($version, '^(8\.[34])$', "version ${version} is not supported for ${::operatingsystem} ${::lsbdistcodename}!")
-          }
-          'squeeze': {
-            validate_re($version, '^(8\.4|9\.0|9\.1)$', "version ${version} is not supported for ${::operatingsystem} ${::lsbdistcodename}!")
-          }
-          'wheezy': {
-            validate_re($version, '^9\.1$', "version ${version} is not supported for ${::operatingsystem} ${::lsbdistcodename}!")
-          }
-          'lucid': {
-            validate_re($version, '^8\.4$', "version ${version} is not supported for ${::operatingsystem} ${::lsbdistcodename}!")
-          }
-          /^(precise|quantal)$/: {
-            validate_re($version, '^9\.1$', "version ${version} is not supported for ${::operatingsystem} ${::lsbdistcodename}!")
-          }
-          default: { fail "${::operatingsystem} ${::lsbdistcodename} is not yet supported!" }
-        }
-      }
-      'RedHat' : {
-        case $::lsbmajdistrelease {
-          '6': {
-            validate_re($version, '^8\.4$', "version ${version} is not supported for ${::operatingsystem} ${::lsbdistcodename}!")
-          }
-          default: { fail "${::operatingsystem} ${::lsbdistrelease} is not yet supported!" }
-        }
-      }
-      default: { fail "${::operatingsystem} is not yet supported!" }
-    }
+  if $version != undef {
+    warning('Passing "version" to postgis is deprecated.')
+  }
+  if $check_version != undef {
+    warning('Passing "check_version" to postgis in deprecated.')
   }
 
   $script_path = $::osfamily ? {
-    Debian => $version ? {
-      '8.3'           => '/usr/share/postgresql-8.3-postgis',
-      /(8.4|9.0|9.1)/ => "/usr/share/postgresql/${version}/contrib/postgis-1.5",
+    Debian => $::postgresql::server::version ? {
+      '8.3'   => '/usr/share/postgresql-8.3-postgis',
+      default => "/usr/share/postgresql/${::postgresql::server::version}/contrib/postgis-1.5",
     },
-    RedHat => $version ? {
-      '9.1' => '/usr/pgsql-9.1/share/contrib/postgis-1.5',
-    },
+    RedHat => "/usr/pgsql-${::postgresql::server::version}/share/contrib/postgis-1.5",
   }
 
-  $packages = $::osfamily ? {
-    Debian => ["postgresql-${version}-postgis", 'postgis'],
-    RedHat => ['postgis91', 'postgis91-utils'],
-  }
-
-  Class['postgresql::server']
-  ->
-  package { $packages:
-    ensure => 'present',
-  }
+  class { 'postgresql::server::postgis': }
   ->
   postgresql::server::database { 'template_postgis':
     istemplate => true,
