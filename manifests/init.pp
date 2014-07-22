@@ -43,7 +43,7 @@ class postgis(
     require => Exec['createlang plpgsql template_postgis'],
   }
 
-  if $version >= '9.1' {
+  if $::postgresql::server::version >= '9.1' {
     postgresql::server::table_grant { 'GRANT ALL ON geometry_columns TO public':
       privilege => 'ALL',
       table     => 'geometry_columns',
