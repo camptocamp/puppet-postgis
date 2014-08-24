@@ -19,7 +19,7 @@ class postgis(
     RedHat => "/usr/share/pgsql/contrib",
   }
 
-  class { 'postgresql::server::postgis': }
+  class { 'postgresql::server::postgis': package_name => 'postgis2_93' }
   ->
   postgresql::server::database { 'template_postgis':
     istemplate => true,
