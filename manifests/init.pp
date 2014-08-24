@@ -31,7 +31,7 @@ class postgis(
     unless  => 'createlang -l template_postgis | grep -q plpgsql',
   }
 
-  exec { "psql -q -d template_postgis -f ${script_path}/postgis-64.sql":
+  exec { "psql -q -d template_postgis -f ${script_path}/postgis.sql":
     user    => 'postgres',
     unless  => 'echo "\dt" | psql -d template_postgis | grep -q geometry_columns',
     require => Exec['createlang plpgsql template_postgis'],
@@ -49,7 +49,7 @@ class postgis(
       table     => 'geometry_columns',
       db        => 'template_postgis',
       role      => 'public',
-      require   => Exec["psql -q -d template_postgis -f ${script_path}/postgis-64.sql"],
+      require   => Exec["psql -q -d template_postgis -f ${script_path}/postgis.sql"],
       notify    => Postgresql_psql['vacuum postgis'],
     }
     postgresql::server::table_grant { 'GRANT SELECT ON spatial_ref_sys TO public':
@@ -64,7 +64,7 @@ class postgis(
     # SELECT 1 WHERE has_table_privilege('public',...) does not work before 9.1
     exec { 'echo GRANT ALL ON geometry_columns TO public | psql -q':
       refreshonly => true,
-      subscribe   => Exec["psql -q -d template_postgis -f ${script_path}/postgis-64.sql"],
+      subscribe   => Exec["psql -q -d template_postgis -f ${script_path}/postgis.sql"],
     }
     exec { 'echo GRANT SELECT ON spatial_ref_sys TO public | psql -q':
       refreshonly => true,
