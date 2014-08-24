@@ -16,7 +16,7 @@ class postgis(
       '8.3'   => '/usr/share/postgresql-8.3-postgis',
       default => "/usr/share/postgresql/${::postgresql::server::version}/contrib/postgis-1.5",
     },
-    RedHat => "/usr/share/pgsql/contrib",
+    RedHat => "/usr/pgsql-${::postgresql::server::version}/share/contrib/postgis-2.1",
   }
 
   class { 'postgresql::server::postgis': package_name => 'postgis2_93' }
