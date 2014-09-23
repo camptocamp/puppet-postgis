@@ -1,0 +1,14 @@
+{
+  "name": "camptocamp-postgis",
+  "version": "1.0.1",
+  "author": "Camptocamp",
+  "summary": "Camptocamp Postgis Module",
+  "license": "Apache 2.0",
+  "source": "https://github.com/camptocamp/puppet-postgis",
+  "project_page": "https://github.com/camptocamp/puppet-postgis",
+  "issues_url": "https://github.com/camptocamp/puppet-postgis/issues",
+  "description": "Postgis Module for Puppet",
+  "dependencies": [
+    {"name":"puppetlabs/postgresql", "version_requirement":">= 3.4.0"}
+  ]
+}
