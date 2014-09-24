@@ -12,11 +12,11 @@ class postgis(
   }
 
   $script_path = $::osfamily ? {
-    Debian => $::postgresql::server::_version ? {
+    Debian => $::postgresql::globals::globals_version ? {
       '8.3'   => '/usr/share/postgresql-8.3-postgis',
-      default => "/usr/share/postgresql/${::postgresql::server::_version}/contrib/postgis-1.5",
+      default => "/usr/share/postgresql/${::postgresql::globals::globals_version}/contrib/postgis-${::postgresql::globals::globals_postgis_version}",
     },
-    RedHat => "/usr/pgsql-${::postgresql::server::_version}/share/contrib/postgis-1.5",
+    RedHat => "/usr/pgsql-${::postgresql::globals::globals_version}}/share/contrib/postgis-${::postgresql::globals::globals_postgis_version}",
   }
 
   class { 'postgresql::server::postgis': }
@@ -43,7 +43,7 @@ class postgis(
     require => Exec['createlang plpgsql template_postgis'],
   }
 
-  if $::postgresql::server::_version >= '9.1' {
+  if $::postgresql::globals::globals_version >= '9.1' {
     postgresql::server::table_grant { 'GRANT ALL ON geometry_columns TO public':
       privilege => 'ALL',
       table     => 'geometry_columns',
