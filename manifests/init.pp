@@ -1,15 +1,5 @@
 # Class: postgis
-class postgis(
-  $version       = undef,
-  $check_version = undef,
-) {
-
-  if $version != undef {
-    warning('Passing "version" to postgis is deprecated.')
-  }
-  if $check_version != undef {
-    warning('Passing "check_version" to postgis in deprecated.')
-  }
+class postgis {
 
   $script_path = $::osfamily ? {
     Debian => $::postgresql::globals::globals_version ? {
