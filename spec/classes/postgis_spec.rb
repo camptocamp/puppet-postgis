@@ -9,11 +9,13 @@ describe 'postgis' do
     end
 
     let(:facts) {{
-      :concat_basedir           => '/var/lib/puppet/concat',
-      :lsbdistcodename          => 'wheezy',
-      :operatingsystem          => 'Debian',
-      :operatingsystemrelease   => 'wheezy',
-      :osfamily                 => 'Debian',
+      :concat_basedir         => '/var/lib/puppet/concat',
+      :id                     => 'root',
+      :lsbdistcodename        => 'wheezy',
+      :operatingsystem        => 'Debian',
+      :operatingsystemrelease => 'wheezy',
+      :osfamily               => 'Debian',
+      :path                   => '/foo',
     }}
 
     context 'with no parameter' do
@@ -59,11 +61,13 @@ describe 'postgis' do
     end
 
     let(:facts) {{
-      :concat_basedir           => '/var/lib/puppet/concat',
-      :lsbdistcodename          => 'wheezy',
-      :operatingsystem          => 'Debian',
-      :operatingsystemrelease   => 'wheezy',
-      :osfamily                 => 'Debian',
+      :concat_basedir         => '/var/lib/puppet/concat',
+      :id                     => 'root',
+      :lsbdistcodename        => 'wheezy',
+      :operatingsystem        => 'Debian',
+      :operatingsystemrelease => 'wheezy',
+      :osfamily               => 'Debian',
+      :path                   => 'foo',
     }}
 
     context 'with no parameter' do
