@@ -22,34 +22,33 @@ describe 'postgis' do
 
       it { should contain_class('postgresql::server::postgis') }
   
-      it { should contain_postgresql__server__database('template_postgis')
-        .with({
+      it do
+        should contain_postgresql__server__database('template_postgis').with({
           :istemplate => true,
           :template   => 'template1',
         })
-      }
+      end
   
-      it { should contain_exec('createlang plpgsql template_postgis')
-        .with({
+      it do
+        should contain_exec('createlang plpgsql template_postgis').with({
           :user   => 'postgres',
           :unless => 'createlang -l template_postgis | grep -q plpgsql',
-        })
-        .that_requires('Postgresql::Server::Database[template_postgis]')
-      }
+        }).that_requires('Postgresql::Server::Database[template_postgis]')
+      end
   
-      it { should contain_exec('psql -q -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql')
-        .with({
+      it do
+        should contain_exec('psql -q -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql').with({
           :user   => 'postgres',
           :unless => 'echo "\dt" | psql -d template_postgis | grep -q geometry_columns',
         })
-      }
+      end
   
-      it { should contain_exec('psql -q -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql')
-        .with({
+      it do
+        should contain_exec('psql -q -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql').with({
           :user   => 'postgres',
           :unless => 'test $(psql -At -d template_postgis -c "select count(*) from spatial_ref_sys") -ne 0',
         })
-      }
+      end
 
     end
   end
@@ -67,36 +66,35 @@ describe 'postgis' do
       :operatingsystem        => 'Debian',
       :operatingsystemrelease => 'wheezy',
       :osfamily               => 'Debian',
-      :path                   => 'foo',
+      :path                   => '/foo',
     }}
 
     context 'with no parameter' do
 
       it { should contain_class('postgresql::server::postgis') }
   
-      it { should contain_postgresql__server__database('template_postgis')
-        .with({
+      it do
+        should contain_postgresql__server__database('template_postgis').with({
           :istemplate => true,
           :template   => 'template1',
         })
-      }
+      end
   
-      it { should contain_postgresql_psql('Add postgis extension on template_postgis')
-        .with({
+      it do
+        should contain_postgresql_psql('Add postgis extension on template_postgis').with({
           :db      => 'template_postgis',
           :command => 'CREATE EXTENSION postgis',
           :unless  => "SELECT extname FROM pg_extension WHERE extname = 'postgis'",
-        })
-        .that_requires('Postgresql::Server::Database[template_postgis]')
-      }
+        }).that_requires('Postgresql::Server::Database[template_postgis]')
+      end
 
-      it { should contain_postgresql_psql('Add postgis_topology extension on template_postgis')
-        .with({
+      it do
+        should contain_postgresql_psql('Add postgis_topology extension on template_postgis').with({
           :db      => 'template_postgis',
           :command => 'CREATE EXTENSION postgis_topology',
           :unless  => "SELECT extname FROM pg_extension WHERE extname = 'postgis_topology'",
         })
-      }
+      end
 
     end
   end
