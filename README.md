@@ -1,6 +1,8 @@
 PostGis Puppet module
 =====================
 
+[![Build Status](https://travis-ci.org/camptocamp/puppet-postgis.png?branch=master)](https://travis-ci.org/camptocamp/puppet-postgis)
+
 Usage
 -----
 
