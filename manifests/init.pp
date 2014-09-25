@@ -35,12 +35,12 @@ class postgis {
       require => Postgresql::Server::Database['template_postgis'],
     } ->
     exec { "psql -q -d template_postgis -f ${script_path}/postgis.sql":
-      user    => 'postgres',
-      unless  => 'echo "\dt" | psql -d template_postgis | grep -q geometry_columns',
+      user   => 'postgres',
+      unless => 'echo "\dt" | psql -d template_postgis | grep -q geometry_columns',
     } ->
     exec { "psql -q -d template_postgis -f ${script_path}/spatial_ref_sys.sql":
-      user    => 'postgres',
-      unless  => 'test $(psql -At -d template_postgis -c "select count(*) from spatial_ref_sys") -ne 0',
+      user   => 'postgres',
+      unless => 'test $(psql -At -d template_postgis -c "select count(*) from spatial_ref_sys") -ne 0',
     }
   }
 
