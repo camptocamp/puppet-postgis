@@ -29,6 +29,9 @@ class postgis {
       },
       RedHat => "/usr/pgsql-${::postgresql::globals::globals_version}}/share/contrib/postgis-${::postgresql::globals::globals_postgis_version}",
     }
+    Exec {
+      path => ['/usr/bin', '/bin', ],
+    }
     exec { 'createlang plpgsql template_postgis':
       user    => 'postgres',
       unless  => 'createlang -l template_postgis | grep -q plpgsql',
