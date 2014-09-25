@@ -1,14 +1,6 @@
 # Class: postgis
 class postgis {
 
-  $script_path = $::osfamily ? {
-    Debian => $::postgresql::globals::globals_version ? {
-      '8.3'   => '/usr/share/postgresql-8.3-postgis',
-      default => "/usr/share/postgresql/${::postgresql::globals::globals_version}/contrib/postgis-${::postgresql::globals::globals_postgis_version}",
-    },
-    RedHat => "/usr/pgsql-${::postgresql::globals::globals_version}}/share/contrib/postgis-${::postgresql::globals::globals_postgis_version}",
-  }
-
   class { 'postgresql::server::postgis': }
   ->
   postgresql::server::database { 'template_postgis':
@@ -30,6 +22,13 @@ class postgis {
     }
   }
   else {
+    $script_path = $::osfamily ? {
+      Debian => $::postgresql::globals::globals_version ? {
+        '8.3'   => '/usr/share/postgresql-8.3-postgis',
+        default => "/usr/share/postgresql/${::postgresql::globals::globals_version}/contrib/postgis-${::postgresql::globals::globals_postgis_version}",
+      },
+      RedHat => "/usr/pgsql-${::postgresql::globals::globals_version}}/share/contrib/postgis-${::postgresql::globals::globals_postgis_version}",
+    }
     exec { 'createlang plpgsql template_postgis':
       user    => 'postgres',
       unless  => 'createlang -l template_postgis | grep -q plpgsql',
