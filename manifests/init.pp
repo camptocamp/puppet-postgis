@@ -1,22 +1,12 @@
 # Class: postgis
-class postgis(
-  $version       = undef,
-  $check_version = undef,
-) {
-
-  if $version != undef {
-    warning('Passing "version" to postgis is deprecated.')
-  }
-  if $check_version != undef {
-    warning('Passing "check_version" to postgis in deprecated.')
-  }
+class postgis {
 
   $script_path = $::osfamily ? {
-    Debian => $::postgresql::server::_version ? {
+    Debian => $::postgresql::globals::globals_version ? {
       '8.3'   => '/usr/share/postgresql-8.3-postgis',
-      default => "/usr/share/postgresql/${::postgresql::server::_version}/contrib/postgis-1.5",
+      default => "/usr/share/postgresql/${::postgresql::globals::globals_version}/contrib/postgis-${::postgresql::globals::globals_postgis_version}",
     },
-    RedHat => "/usr/pgsql-${::postgresql::server::_version}/share/contrib/postgis-1.5",
+    RedHat => "/usr/pgsql-${::postgresql::globals::globals_version}}/share/contrib/postgis-${::postgresql::globals::globals_postgis_version}",
   }
 
   class { 'postgresql::server::postgis': }
@@ -25,57 +15,34 @@ class postgis(
     istemplate => true,
     template   => 'template1',
   }
-  ->
-  exec { 'createlang plpgsql template_postgis':
-    user    => 'postgres',
-    unless  => 'createlang -l template_postgis | grep -q plpgsql',
-  }
 
-  exec { "psql -q -d template_postgis -f ${script_path}/postgis.sql":
-    user    => 'postgres',
-    unless  => 'echo "\dt" | psql -d template_postgis | grep -q geometry_columns',
-    require => Exec['createlang plpgsql template_postgis'],
-  }
-
-  exec { "psql -q -d template_postgis -f ${script_path}/spatial_ref_sys.sql":
-    user    => 'postgres',
-    unless  => 'test $(psql -At -d template_postgis -c "select count(*) from spatial_ref_sys") -ne 0',
-    require => Exec['createlang plpgsql template_postgis'],
-  }
-
-  if $::postgresql::server::_version >= '9.1' {
-    postgresql::server::table_grant { 'GRANT ALL ON geometry_columns TO public':
-      privilege => 'ALL',
-      table     => 'geometry_columns',
-      db        => 'template_postgis',
-      role      => 'public',
-      require   => Exec["psql -q -d template_postgis -f ${script_path}/postgis.sql"],
-      notify    => Postgresql_psql['vacuum postgis'],
-    }
-    postgresql::server::table_grant { 'GRANT SELECT ON spatial_ref_sys TO public':
-      privilege => 'SELECT',
-      table     => 'spatial_ref_sys',
-      db        => 'template_postgis',
-      role      => 'public',
-      require   => Exec["psql -q -d template_postgis -f ${script_path}/spatial_ref_sys.sql"],
-      notify    => Postgresql_psql['vacuum postgis'],
-    }
-  } else {
-    # SELECT 1 WHERE has_table_privilege('public',...) does not work before 9.1
-    exec { 'echo GRANT ALL ON geometry_columns TO public | psql -q':
-      refreshonly => true,
-      subscribe   => Exec["psql -q -d template_postgis -f ${script_path}/postgis.sql"],
-    }
-    exec { 'echo GRANT SELECT ON spatial_ref_sys TO public | psql -q':
-      refreshonly => true,
-      subscribe   => Exec["psql -q -d template_postgis -f ${script_path}/spatial_ref_sys.sql"],
+  if $::postgresql::globals::globals_version >= '9.1' and $::postgresql::globals::globals_postgis_version >= '2.0' {
+    postgresql_psql {'Add postgis extension on template_postgis':
+      db      => 'template_postgis',
+      command => 'CREATE EXTENSION postgis',
+      unless  => "SELECT extname FROM pg_extension WHERE extname = 'postgis'",
+      require => Postgresql::Server::Database['template_postgis'],
+    } ->
+    postgresql_psql {'Add postgis_topology extension on template_postgis':
+      db      => 'template_postgis',
+      command => 'CREATE EXTENSION postgis_topology',
+      unless  => "SELECT extname FROM pg_extension WHERE extname = 'postgis_topology'",
     }
   }
-
-  postgresql_psql { 'vacuum postgis':
-    command     => 'VACUUM FREEZE',
-    db          => 'template_postgis',
-    refreshonly => true,
+  else {
+    exec { 'createlang plpgsql template_postgis':
+      user    => 'postgres',
+      unless  => 'createlang -l template_postgis | grep -q plpgsql',
+      require => Postgresql::Server::Database['template_postgis'],
+    } ->
+    exec { "psql -q -d template_postgis -f ${script_path}/postgis.sql":
+      user    => 'postgres',
+      unless  => 'echo "\dt" | psql -d template_postgis | grep -q geometry_columns',
+    } ->
+    exec { "psql -q -d template_postgis -f ${script_path}/spatial_ref_sys.sql":
+      user    => 'postgres',
+      unless  => 'test $(psql -At -d template_postgis -c "select count(*) from spatial_ref_sys") -ne 0',
+    }
   }
 
 }
