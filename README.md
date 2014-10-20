@@ -1,6 +1,7 @@
 PostGis Puppet module
 =====================
 
+[![Puppet Forge](http://img.shields.io/puppetforge/v/camptocamp/postgis.svg)](https://forge.puppetlabs.com/camptocamp/postgis)
 [![Build Status](https://travis-ci.org/camptocamp/puppet-postgis.png?branch=master)](https://travis-ci.org/camptocamp/puppet-postgis)
 
 Usage
