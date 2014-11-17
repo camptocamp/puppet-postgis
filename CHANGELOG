@@ -1,3 +1,7 @@
+2014-11-17 - Version 2.2.1
+
+Update meta files with modulesync
+
 2014-11-12 - Version 2.2.0
 
 Remove postgis::database definition
