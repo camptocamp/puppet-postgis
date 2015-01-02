@@ -27,7 +27,7 @@ class postgis {
         '8.3'   => '/usr/share/postgresql-8.3-postgis',
         default => "/usr/share/postgresql/${::postgresql::globals::globals_version}/contrib/postgis-${::postgresql::globals::globals_postgis_version}",
       },
-      'RedHat' => "/usr/pgsql-${::postgresql::globals::globals_version}}/share/contrib/postgis-${::postgresql::globals::globals_postgis_version}",
+      'RedHat' => "/usr/pgsql-${::postgresql::globals::globals_version}/share/contrib/postgis-${::postgresql::globals::globals_postgis_version}",
     }
     Exec {
       path => ['/usr/bin', '/bin', ],
