@@ -1,7 +1,7 @@
 # Class: postgis
 class postgis {
 
-  class { 'postgresql::server::postgis': }
+  class { '::postgresql::server::postgis': }
   ->
   postgresql::server::database { 'template_postgis':
     istemplate => true,
