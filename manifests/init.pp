@@ -8,7 +8,7 @@ class postgis {
     template   => 'template1',
   }
 
-  if $::postgresql::globals::globals_version >= '9.1' and $::postgresql::globals::globals_postgis_version >= '2.0' {
+  if versioncmp($::postgresql::globals::globals_version, '9.1') >= 0 and versioncmp($::postgresql::globals::globals_postgis_version, '2.0') >= 0 {
     postgresql_psql {'Add postgis extension on template_postgis':
       db      => 'template_postgis',
       command => 'CREATE EXTENSION postgis',
