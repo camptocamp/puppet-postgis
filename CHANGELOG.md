@@ -1,3 +1,7 @@
+## 2015-03-24 - Release 2.2.4
+
+Lint and future parser fix
+
 ## 2015-01-05 - Release 2.2.3
 
 Improve bundler cache in Travis CI
