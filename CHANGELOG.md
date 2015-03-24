@@ -1,3 +1,7 @@
+## 2015-03-24 - Release 2.2.5
+
+Fix for RedHat OS family
+
 ## 2015-03-24 - Release 2.2.4
 
 Lint and future parser fix
