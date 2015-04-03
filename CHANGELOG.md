@@ -1,3 +1,7 @@
+## 2015-04-03 - Release 2.2.6
+
+Confine rspec pinning to ruby 1.8
+
 ## 2015-03-24 - Release 2.2.5
 
 Fix for RedHat OS family
