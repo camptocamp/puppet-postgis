@@ -1,3 +1,7 @@
+## 2015-04-17 - Release 2.2.7
+
+Fetch fixtures from puppet forge
+
 ## 2015-04-03 - Release 2.2.6
 
 Confine rspec pinning to ruby 1.8
