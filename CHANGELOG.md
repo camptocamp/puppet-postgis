@@ -1,3 +1,7 @@
+## 2015-05-28 - Release 2.2.14
+
+Add beaker_spec_helper to Gemfile
+
 ## 2015-05-26 - Release 2.2.13
 
 Use random application order in nodeset
