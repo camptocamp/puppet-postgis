@@ -2,8 +2,8 @@
 class postgis {
 
   class { '::postgresql::server::postgis': }
-  ->
-  postgresql::server::database { 'template_postgis':
+  
+  -> postgresql::server::database { 'template_postgis':
     istemplate => true,
     template   => 'template1',
   }
@@ -14,8 +14,8 @@ class postgis {
       command => 'CREATE EXTENSION postgis',
       unless  => "SELECT extname FROM pg_extension WHERE extname = 'postgis'",
       require => Postgresql::Server::Database['template_postgis'],
-    } ->
-    postgresql_psql {'Add postgis_topology extension on template_postgis':
+    }
+    -> postgresql_psql {'Add postgis_topology extension on template_postgis':
       db      => 'template_postgis',
       command => 'CREATE EXTENSION postgis_topology',
       unless  => "SELECT extname FROM pg_extension WHERE extname = 'postgis_topology'",
@@ -36,12 +36,12 @@ class postgis {
       user    => 'postgres',
       unless  => 'createlang -l template_postgis | grep -q plpgsql',
       require => Postgresql::Server::Database['template_postgis'],
-    } ->
-    exec { "psql -q -d template_postgis -f ${script_path}/postgis.sql":
+    }
+    -> exec { "psql -q -d template_postgis -f ${script_path}/postgis.sql":
       user   => 'postgres',
       unless => 'echo "\dt" | psql -d template_postgis | grep -q geometry_columns',
-    } ->
-    exec { "psql -q -d template_postgis -f ${script_path}/spatial_ref_sys.sql":
+    }
+    -> exec { "psql -q -d template_postgis -f ${script_path}/spatial_ref_sys.sql":
       user   => 'postgres',
       unless => 'test $(psql -At -d template_postgis -c "select count(*) from spatial_ref_sys") -ne 0',
     }
