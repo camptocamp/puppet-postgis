@@ -9,6 +9,12 @@ class postgis {
   }
 
   if versioncmp($::postgresql::globals::globals_version, '9.1') >= 0 and versioncmp($::postgresql::globals::globals_postgis_version, '2.0') >= 0 {
+    if $::osfamily == 'Debian' {
+      package {"${::postgresql::server::postgis::package_name}-scripts":
+        ensure => present,
+        before => Postgresql_psql['Add postgis extension on template_postgis'],
+      }
+    }
     postgresql_psql {'Add postgis extension on template_postgis':
       db      => 'template_postgis',
       command => 'CREATE EXTENSION postgis',
