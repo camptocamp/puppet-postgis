@@ -1,3 +1,7 @@
+## 2017-10-27 - Release 2.3.0
+
+Explicit postgres -scripts package installation (Debian Stretch support)
+
 ## 2015-08-21 - Release 2.2.16
 
 Use docker for acceptance tests
